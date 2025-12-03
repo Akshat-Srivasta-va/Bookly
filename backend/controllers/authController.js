@@ -33,8 +33,11 @@ exports.registerUser = async (req, res) => {
 
     if (user) {
     res.status(201).json({
-     
+     message: "User registered successfully",
+     token: generateToken(user._id),
     })
+    } else {
+      res.status(400).json({ message: "Invalid user data" });
     }
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -47,13 +50,24 @@ exports.registerUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
+  try {
+
+  } catch(error) {
+    res.status(500).json({ message: "Server error" });  
+  }
 };
 
 // @desc     Get current logged-in user
 // @route    GET /api/auth/me
 // @access   Private
 
-exports.getMe = async (req, res) => {};
+exports.getProfile = async (req, res) => {
+  try {
+
+  } catch(error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 // @desc   Update user profile
 // @route  PUT /api/auth/me
