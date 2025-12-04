@@ -13,13 +13,14 @@ const createBook = async (req, res) => {
         .status(400)
         .json({ message: "Please provide a title and author" });
     }
-    const book = new Book({
+    const book = await Book.create({
       userId: req.user._id,
       title,
       author,
       subtitle,
       chapters,
     });
+
     res.status(201).json(book);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -32,9 +33,7 @@ const createBook = async (req, res) => {
 
 const getBooks = async (req, res) => {
   try {
-    const books = await Book.find({ userId: req.user.id }).sort({
-      createdAt: -1,
-    });
+    const books = await Book.find({ userId: req.user._id }).sort({createdAt: -1});
     res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -53,7 +52,7 @@ const getBookById = async (req, res) => {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    if (book.userId.toString() !== req.user._id.toSting()) {
+    if (book.userId.toString() !== req.user._id.toString()) {
       return res.status(401).json({ message: "Not authorized" });
     }
 
@@ -62,11 +61,14 @@ const getBookById = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
 // @desc     Update book
 // @route    PUT /api/books/:id
 // @access   Private
 const updateBook = async (req, res) => {
   try {
+    
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
