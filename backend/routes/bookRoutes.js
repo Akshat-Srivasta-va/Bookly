@@ -16,6 +16,6 @@ router.use(protect);
 
 router.route("/").post(createBook).get(getBooks);
 router.route("/:id").get(getBookById).put(updateBook).delete(deleteBook);
-router.route("/:id/cover").put(upload.single("cover"), updateBookCover);
+router.route("/:id/cover").put(upload, updateBookCover);
 
 module.exports = router;

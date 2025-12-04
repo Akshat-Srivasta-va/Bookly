@@ -9,7 +9,7 @@ const chapterSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    constent: {
+    content: {
         type: String,
         default: "",
     }
@@ -28,7 +28,7 @@ const bookSchema = new mongoose.Schema(
         },
         subtitle: {
             type: String,
-            defualt: "",
+            default: "",
         },
         author: {
             type: String,

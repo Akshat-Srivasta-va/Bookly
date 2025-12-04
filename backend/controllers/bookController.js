@@ -6,6 +6,21 @@ const Book = require("../models/Book");
 
 const createBook = async (req, res) => {
   try {
+    const { title, author, subtitle, chapters } = req.body;
+
+    if (!title || !author) {
+      return res
+        .status(400)
+        .json({ message: "Please provide a title and author" });
+    }
+    const book = new Book({
+      userId: req.user._id,
+      title,
+      author,
+      subtitle,
+      chapters,
+    });
+    res.status(201).json(book);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -17,6 +32,10 @@ const createBook = async (req, res) => {
 
 const getBooks = async (req, res) => {
   try {
+    const books = await Book.find({ userId: req.user.id }).sort({
+      createdAt: -1,
+    });
+    res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -28,6 +47,17 @@ const getBooks = async (req, res) => {
 
 const getBookById = async (req, res) => {
   try {
+    const book = await Book.findById(req.params.id);
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    if (book.userId.toString() !== req.user._id.toSting()) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    res.status(200).json(book);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
