@@ -2,13 +2,9 @@
 
 // const ai = new GoogleGenAi({ apiKey: process.env.GEMINI_API_KEY });
 
-import {GoogleGenAI} from '@google/genai';
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const ai = new GoogleGenAI({apiKey: GEMINI_API_KEY});
-
-
-
+const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // @desc     Generate text using AI
 // @route    POST /api/ai/generate-text
@@ -51,15 +47,16 @@ const generateOutLine = async (req, res) => {
     ]
     Generate the outline now:`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-lite",
-      contents: prompt,
-    });
+    // const response = await ai.models.generateContent({
+    //   model: "gemini-2.5-flash-lite",
+    //   contents: prompt,
+    // });
 
-    const text = response.text;
+    // const text = response.text;
 
-
-    
+    const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
 
     // Find and extract the JSON array from the response text
     const startIndex = text.indexOf("[");
@@ -105,12 +102,16 @@ const generateChapterContent = async (req, res) => {
 
     const prompt = ``;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-lite",
-      contents: prompt,
-    });
+    // const response = await ai.models.generateContent({
+    //   model: "gemini-2.5-flash-lite",
+    //   contents: prompt,
+    // });
 
-    const text = response.text;
+    // const text = response.text;
+
+    const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
 
     // Find and extract the JSON array from the response text
     const startIndex = text.indexOf("[");
@@ -131,12 +132,10 @@ const generateChapterContent = async (req, res) => {
       res.status(200).json({ outline });
     } catch (e) {
       console.error("Error parsing JSON from AI response", jsonString);
-      res
-        .status(500)
-        .json({
-          message:
-            "Failed to generate a valid outline. The AI responce was not valid JSON",
-        });
+      res.status(500).json({
+        message:
+          "Failed to generate a valid outline. The AI responce was not valid JSON",
+      });
     }
   } catch (error) {
     console.error("Error generating chapter content", error);
@@ -150,4 +149,17 @@ module.exports = {
   generateOutLine,
   generateChapterContent,
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
