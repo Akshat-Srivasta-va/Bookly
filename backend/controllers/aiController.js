@@ -3,6 +3,7 @@
 // const ai = new GoogleGenAi({ apiKey: process.env.GEMINI_API_KEY });
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+// const { response } = require("express");
 
 const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -46,13 +47,6 @@ const generateOutLine = async (req, res) => {
 }
     ]
     Generate the outline now:`;
-
-    // const response = await ai.models.generateContent({
-    //   model: "gemini-2.5-flash-lite",
-    //   contents: prompt,
-    // });
-
-    // const text = response.text;
 
     const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
     const result = await model.generateContent(prompt);
@@ -124,43 +118,14 @@ const generateChapterContent = async (req, res) => {
 
     Begin writing the chapter content now:`;
 
-    // const response = await ai.models.generateContent({
-    //   model: "gemini-2.5-flash-lite",
-    //   contents: prompt,
-    // });
-
-    // const text = response.text;
-
     const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
     const result = await model.generateContent(prompt);
     const text = result.response.text();
 
-    // Find and extract the JSON array from the response text
-    const startIndex = text.indexOf("[");
-    const endIndex = text.lastIndexOf("]");
-
-    if (startIndex === -1 || endIndex === -1) {
-      console.error("Could not find JSON array in AI response", text);
-      return res
-        .status(500)
-        .json({ message: "Failed to parse AI response, no JSON array found" });
-    }
-
-    const jsonString = text.substring(startIndex, endIndex + 1);
-
-    // Validate if the response is valid JSON
-    try {
-      const outline = JSON.parse(jsonString);
-      res.status(200).json({ outline });
-    } catch (e) {
-      console.error("Error parsing JSON from AI response", jsonString);
-      res.status(500).json({
-        message:
-          "Failed to generate a valid outline. The AI responce was not valid JSON",
-      });
-    }
-  } catch (error) {
-    console.error("Error generating chapter content", error);
+  
+     res.status(200).json({content: text})
+  } catch(error) {
+    console.error("Error getting chapter:", error);
     res
       .status(500)
       .json({ message: "Server error while generating chapter content" });
@@ -171,17 +136,5 @@ module.exports = {
   generateOutLine,
   generateChapterContent,
 };
-
-
-
-
-
-
-
-
-
-
-
-
 
 

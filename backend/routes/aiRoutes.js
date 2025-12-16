@@ -11,6 +11,6 @@ const { protect } = require("../middlewares/authMiddleware");
 router.use(protect);
 
 router.post("/generate-outline", generateOutLine);
-router.post("/generate-chapter", generateChapterContent);
+router.post("/generate-chapter-content", generateChapterContent);
 
 module.exports = router;
