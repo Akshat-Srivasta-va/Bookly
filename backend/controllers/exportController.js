@@ -130,7 +130,7 @@ const processMarkdownToDocx = (markdown) => {
           listType = null;
           //   Add spacing after list
           paragraphs.push(new Paragraph({text: "", spacing: {after: 100}}));
-  } else if(tokenn.type === "ordered_list_open") {
+  } else if(token.type === "ordered_list_open") {
     inList = true;
     listType = "ordered";
     orderedCounter = 1;
@@ -253,7 +253,7 @@ const processMarkdownToDocx = (markdown) => {
   };
 
   // Process inline content  (bold, italic, text)
-  const processInLineContent = (childern) => {
+  const processInlineContent = (childern) => {
     const textRuns = [];
     let currentFormatting = {bold: false, italic: false};
     let textBuffer = "";
@@ -272,7 +272,7 @@ const processMarkdownToDocx = (markdown) => {
       textBuffer = "";
       }
     };
-    childern.forEach((child) => {
+    children.forEach((child) => {
       if(child.type === "strong_open") {
         flushText();
         currentFormatting.bold = true;
@@ -409,7 +409,7 @@ const exportAsDocument = async (req, res) => {
         text: "",
         border: {
           bottom: {
-            color: "4F6E5",
+            color: "4F46E5",
             space: 1,
             style: "single",
             size: 12,
@@ -440,7 +440,7 @@ const exportAsDocument = async (req, res) => {
               new TextRun({
                 text: chapter.title,
                 bold: true,
-                font: DOCX_STYLES.font.heading,
+                font: DOCX_STYLES.fonts.heading,
                 size: DOCX_STYLES.sizes.chapterTitle * 2,
                 color: "1A202C",
               }),
@@ -475,7 +475,7 @@ const exportAsDocument = async (req, res) => {
               },
             },
           },
-          childern: sections,
+          children: sections,
         },
       ],
     });
@@ -513,7 +513,7 @@ const TYPOGRAPHY = {
     serifItalic: "Times-Italic",
     sans: "Helvetica",
     sansBold: "Helvetica-Bold",
-    sansOblique: "Helvevita-Oblique",
+    sansOblique: "Helvetica-Oblique",
   },
   sizes: {
     title: 28,
@@ -651,7 +651,7 @@ const renderMarkdown = (doc, markdown) => {
             .fontSize(TYPOGRAPHY.sizes.body)
             .fillColor(TYPOGRAPHY.colors.text);
 
-            if(i + 1 <tokens.length && token[i + 1].type === "inline") {
+            if(i + 1 <tokens.length && tokens[i + 1].type === "inline") {
               renderInlineTokens(doc, tokens[i + 1].children, {
                 align: "justify",
                 lineGap: 2,
@@ -777,7 +777,7 @@ const exportAsPDF = async(req, res) => {
 
       try {
         if(fs.existsSync(imagePath)) {
-          const pageWidth = doc.page.margin.left - doc.page.margins.right;
+          const pageWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
           const pageHeight = doc.page.height - doc.page.margins.top - doc.page.margins.bottom;
 
           doc.image(imagePath, doc.page.margins.left, doc.page.margins.top, {
@@ -811,12 +811,12 @@ const exportAsPDF = async(req, res) => {
 
       doc
         .font(TYPOGRAPHY.fonts.sans)
-        .font(TYPOGRAPHY.sizes.author)
+        .fontSize(TYPOGRAPHY.sizes.author)
         .fillColor(TYPOGRAPHY.colors.text)
         .text(`by ${book.author}`, {align: "center"});
 
         // Process chapterss
-        if(book.chapters && book.chapters > 0) {
+        if(book.chapters && book.chapters.length > 0) {
           book.chapters.forEach((chapter, index) => {
             try {
               doc.addPage();
