@@ -1,9 +1,11 @@
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const ProtectedRoute = ({children}) => {
- const isAuthenticated = false; // Replace with actual authentication logic
- const loading = false; // Replace with actual loading state
- const location = useLocation
+//  const isAuthenticated = false; // Replace with actual authentication logic
+//  const loading = false; // Replace with actual loading state
+  const { isAuthenticated, loading } = useAuth();
+ const location = useLocation();
 
  if(loading) {
   // you can add a loading spinner here if you want
