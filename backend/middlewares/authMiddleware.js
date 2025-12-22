@@ -17,15 +17,17 @@ if(
 
         // get user from the token
         req.user = await User.findById(decoded.id).select("-password");
+        
+        if (!req.user) {
+            return res.status(401).json({ message: "Not authorized, user not found" });
+        }
 
         next();
     }  catch (error) {
         return res.status(401).json({ message: "Not authorized, token failed" });
     } 
-}
-
-if(!token) {
- return res.status(401).json({ message: "Not authorized, no token" });
+} else {
+    return res.status(401).json({ message: "Not authorized, no token" });
 }
 };
 

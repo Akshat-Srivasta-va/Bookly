@@ -22,8 +22,11 @@ const userSchema = new mongoose.Schema(
         },
         avtar: {
             type: String,
-            type: String,
             default: "",      
+        },
+        isPro: {
+            type: Boolean,
+            default: false,
         },
     },
     { timestamps: true }

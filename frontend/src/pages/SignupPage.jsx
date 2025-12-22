@@ -32,13 +32,14 @@ const SignupPage = () => {
 
        // Fetch profile to get user details
        const profileResponse = await axiosInstance.get(API_PATHS.AUTH.GET_PROFILE, {
-        headers: {Authorization: `Bearer ${token}`}
+        headers: {Authorization: `Bearer ${token}`},
        })
 
        login(profileResponse.data, token)
        toast.success("Account created successfully!");
        navigate("/dashboard");   
     } catch(error) {
+       console.log("Signup Error Details:", error);
        toast.error(error.response?.data?.message || "Signup failed. Please try again");
     }  finally {
       setIsLoading(false);
