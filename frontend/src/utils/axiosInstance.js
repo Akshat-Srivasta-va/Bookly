@@ -1,4 +1,4 @@
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { BASE_URL } from "./apiPath";
 
 const axiosInstance = axios.create({
@@ -24,7 +24,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Responce Interceptor
+// Response Interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
@@ -32,7 +32,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // Handle common errors globally
     if (error.response) {
-      if (error.response.status === 5000) {
+      if (error.response.status === 500) {
         console.error("Server error, Please try again later.");
       }
      } else if (error.code === "ECONNABORTED") {
