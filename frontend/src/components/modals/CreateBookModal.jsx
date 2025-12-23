@@ -93,7 +93,7 @@ const CreateBookModal = ({ isOpen, onClose, onBookCreated }) => {
     }
     setIsFinalizingBook(true);
     try {
-      const response = await axiosInstance.post(API_PATHS.BOOKS.CREATE_BOOK.CREATE_BOOK, {
+      const response = await axiosInstance.post(API_PATHS.BOOKS.CREATE_BOOK, {
         title: bookTitle,
         author: user.name || "Unknown Author",
         chapters: chapters
@@ -103,7 +103,6 @@ const CreateBookModal = ({ isOpen, onClose, onBookCreated }) => {
     onClose();
     resetModal();
   } catch(error) {
-    console.log("TESR_", bookTitle, chapters);
     toast.error(error.response?.data?.message || "Failed to create eBook.")
   } finally {
     setIsFinalizingBook(false);
@@ -216,7 +215,7 @@ const CreateBookModal = ({ isOpen, onClose, onBookCreated }) => {
                 <p className="text-gray-500 text-sm">No chapters yet. Add one to get started.</p>
               </div>
             ) : (
-              chapters.map((chapter, index) => {
+              chapters.map((chapter, index) => (
                 <div key={index} className="group p-4 border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all bg-white">
                   <div className="flex items-start gap-3 mb-3">
                     <div className="flex items-center justify-center w-6 h-6 rounded-full bg-violet-50 text-violet-600 text-xs font-semibold flex-shrink-0 mt-2">{index + 1}</div>
@@ -246,8 +245,8 @@ const CreateBookModal = ({ isOpen, onClose, onBookCreated }) => {
                     rows={2}
                     className="w-full pl-9 text-sm text-gray-600 bg-transparent border-none focus:outline-none focus:ring-0 resize-none placeholder-gray-400"
                   />
-                </div>;
-              })
+                </div>
+              ))
             )}
           </div>
           <div className="flex items-center justify-between pt-4 border-t border-gray-100">
