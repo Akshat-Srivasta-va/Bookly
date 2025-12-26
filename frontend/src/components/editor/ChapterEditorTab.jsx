@@ -243,7 +243,7 @@ const ChapterEditorTab = ({
               <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-100">
              <div className="flex items-center gap-4">
                 <span>
-                  Words: {currentChapter.content ? currentChapter.split(/\s+/).filter(word => word.length > 0).length : 0}
+                  Words: {currentChapter.content ? currentChapter.content.split(/\s+/).filter(word => word.length > 0).length : 0}
 </span>
 <span>
    Characters: {currentChapter.content ? currentChapter.content.length : 0 }
