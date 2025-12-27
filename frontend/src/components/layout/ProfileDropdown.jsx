@@ -13,7 +13,7 @@ const ProfileDropdown = ({
 
   return (
     <div className="relative">
-      <button onClick={onToggle} className="flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-50 tarnsition-colors duration-200">
+      <button onClick={onToggle} className="flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-50 transition-colors duration-200">
         {avtar ? (
           <img src={avtar} alt="Avatar" className="h-9 w-9 object-cover rounded-xl" />
         ) : (

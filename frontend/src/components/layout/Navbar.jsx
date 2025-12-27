@@ -56,7 +56,7 @@ const Navbar = () => {
                 companyName={user?.name || ""}
                 email={user?.email || ""}
                 userRole={user?.role || ""}
-                onLogout={() => console.log("Logout")}
+                onLogout={() => logout()}
               />
             ) : (
               <>
@@ -72,7 +72,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200">
-            {isOpen ? <X className="h-5 w-5" /> : <Menu clash-5 w-5 className="" />}
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
