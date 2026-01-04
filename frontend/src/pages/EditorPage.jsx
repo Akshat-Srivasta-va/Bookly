@@ -130,7 +130,7 @@ const EditorPage = () => {
 
     try {
       const response = await axiosInstance.put(
-        `${API_PATHS.BOOKS.UPDATE_COVER}/${bookId}`,
+        `${API_PATHS.BOOKS.GET_BOOKS}/${bookId}`,
         formData,
         {
           headers: {"Content-Type": "multipart/form-data" },

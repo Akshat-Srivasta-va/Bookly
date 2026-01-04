@@ -43,7 +43,7 @@ const ViewBookPage = () => {
 
     if (!book) return null;
 
-     const coverImageUrl = book.coverImage ? `${BASE_URL}${book.coverImage}` : "";
+     const coverImageUrl = book.coverImage ? `${BASE_URL}/backend${book.coverImage}`.replace(/\\/g, "/") : "";
 
 
   return (
