@@ -37,8 +37,9 @@ const EditorPage = () => {
   const fileInputRef = useRef(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // AI Mdal State
-  const [isOutleineModalOpen, setIsOutlineModalOpen] = useState(false);
+  // AI Moal State
+
+  // const [isOutleineModalOpen, setIsOutlineModalOpen] = useState(false);
   // const [aiTopic, setAiTopic] = useState("");
   const [aiStyle, setAiStyle] = useState("Informative");
   const [isGenerating, setIsGenerating] = useState(false);
