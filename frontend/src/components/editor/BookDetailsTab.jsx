@@ -12,7 +12,9 @@ const BookDetailsTab = ({
 }) => {
   const coverImageUrl = book.coverImage.startsWith("http")
     ? book.coverImage
-    : `${BASE_URL}/backend${book.coverImage}`.replace(/\\/g, "/");
+    // : `${BASE_URL}/backend${book.coverImage}`                
+    : `${BASE_URL}${book.coverImage}`
+    .replace(/\\/g, "/");
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
