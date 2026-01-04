@@ -37,7 +37,7 @@ const ViewBookPage = () => {
            );
            setBook(response.data); 
         } catch(error) {
-            toast.error("Failed to fetch eBook")
+            toast.error("Failed to fetch eBook");
         } finally {
             setIsLoading(false);
         }
