@@ -1,135 +1,66 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Edit, Clock, User, Calendar } from "lucide-react";
+import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import {Book} from "lucide-react";
 
 import DashboardLayout from "../components/layout/DashboardLayout";
-import Button from "../components/ui/Button";
 import axiosInstance from "../utils/axiosInstance";
-import { API_PATHS, BASE_URL } from "../utils/apiPath";
+import { API_PATHS } from "../utils/apiPath";
+import ViewBook from "../components/view/ViewBook";
+
+const ViewBookPageSkelton = () => {
+    <div className="animate-pulse">
+        <div className="h-8 bg-slate-200 rouded-w-1/2 mb-4"></div>
+        <div className="h-4 bg-slate-200 rounded w-1/4 mb-4"></div>
+        <div className="flex gap-8">
+            <div className="w-1/4">
+                <div className="h-96 bg-slate-200 rounded-lg"></div>
+            </div>
+            <div className="w-3/4">
+            <div className="h-full bg-slate-200 rounded-lg"></div>
+            </div>
+        </div>
+    </div>
+}
 
 const ViewBookPage = () => {
-    const { bookId } = useParams();
-    const navigate = useNavigate();
-    const [book, setBook] = useState(null);
+ 
+    const[book, setBook] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const {bookId} = useParams();
 
     useEffect(() => {
         const fetchBook = async () => {
-            try {
-                const response = await axiosInstance.get(
-                    `${API_PATHS.BOOKS.GET_BOOK_BY_ID}/${bookId}`
-                );
-                setBook(response.data);
-            } catch (error) {
-                toast.error("Failed to load book details.");
-                navigate("/dashboard");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchBook();
-    }, [bookId, navigate]);
-
-    if(isLoading) {
-        return (
-            <DashboardLayout>
-                 <div className="flex h-screen items-center justify-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-                 </div>
-            </DashboardLayout>
-        )
-    }
-
-    if (!book) return null;
-
-     const coverImageUrl = book.coverImage ? `${BASE_URL}/backend${book.coverImage}`.replace(/\\/g, "/") : "";
-
+        try {
+           const response = await axiosInstance.get(
+            `${API_PATHS.BOOKS.GET_BOOK_BY_ID}/${bookId}`
+           );
+           setBook(response.data); 
+        } catch(error) {
+            toast.error("Failed to fetch eBook")
+        } finally {
+            setIsLoading(false);
+        }
+    };
+fetchBook();
+    }, [bookId]);
 
   return (
-    <DashboardLayout>
-        <div className="container mx-auto p-6 max-w-5xl">
-            <Button 
-            variant="ghost" 
-            onClick={() => navigate("/dashboard")}
-            className="mb-6 hover:bg-slate-100"
-            >
-                <ArrowLeft className="w-4 h-4 mr-2"/>
-                Back to Dashboard
-            </Button>
-
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                {/* Book Header Section */}
-                <div className="relative h-48 bg-gradient-to-r from-slate-900 to-slate-800">
-                     <div className="absolute -bottom-16 left-8 flex items-end">
-                         <div className="relative w-32 aspect-[2/3] rounded-lg shadow-xl overflow-hidden bg-slate-200 border-4 border-white">
-                            {coverImageUrl ? (
-                                <img 
-                                src={coverImageUrl} 
-                                alt={book.title} 
-                                className="w-full h-full object-cover"
-                                />
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-400">
-                                    No Cover
-                                </div>
-                            )}
-                         </div>
-                     </div>
-                </div>
-
-                <div className="pt-20 px-8 pb-8">
-                     <div className="flex justify-between items-start">
-                        <div>
-                             <h1 className="text-3xl font-bold text-slate-900 mb-2">{book.title}</h1>
-                             {book.subtitle && (
-                                <p className="text-xl text-slate-500 mb-4">{book.subtitle}</p>
-                             )}
-                             
-                             <div className="flex flex-wrap gap-6 text-slate-600 text-sm mb-6">
-                                <div className="flex items-center">
-                                    <User className="w-4 h-4 mr-2 text-indigo-500"/>
-                                    {book.author}
-                                </div>
-                                 <div className="flex items-center">
-                                    <Clock className="w-4 h-4 mr-2 text-indigo-500"/>
-                                    Last updated {new Date(book.updatedAt).toLocaleDateString()}
-                                </div>
-                                <div className="flex items-center">
-                                    <Calendar className="w-4 h-4 mr-2 text-indigo-500"/>
-                                    Created {new Date(book.createdAt).toLocaleDateString()}
-                                </div>
-                             </div>
-                        </div>
-
-                        <Button onClick={() => navigate(`/editor/${book._id}`)} icon={Edit}>
-                            Edit Book
-                        </Button>
-                     </div>
-
-                     <div className="border-t border-slate-200 pt-8 mt-4">
-                        <h2 className="text-lg font-semibold text-slate-900 mb-4">Chapters ({book.chapters?.length || 0})</h2>
-                        <div className="grid gap-4">
-                            {book.chapters?.map((chapter, index) => (
-                                <div key={index} className="p-4 border border-slate-200 rounded-lg hover:border-slate-300 transition-colors">
-                                    <h3 className="font-medium text-slate-900 mb-1">
-                                        <span className="text-slate-400 mr-2">{index + 1}.</span>
-                                        {chapter.title}
-                                    </h3>
-                                    {chapter.description && (
-                                        <p className="text-slate-500 text-sm ml-6 line-clamp-2">{chapter.description}</p>
-                                    )}
-                                </div>
-                            ))}
-                            {(!book.chapters || book.chapters.length === 0) && (
-                                <p className="text-slate-500 italic">No chapters created yet.</p>
-                            )}
-                        </div>
-                     </div>
-                </div>
-            </div>
+  <DashboardLayout>
+    {isLoading ? (
+        <ViewBookPageSkelton />
+    ) : book ? (
+        <ViewBook book={book}/>
+    ) : (
+        <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-slate-200 rounded-xl mt-8">
+        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+             <Book className="w-8 h-8 text-slate-900 mb-2" />
         </div>
-    </DashboardLayout>
+        <h3 className="text-lg font-medium text-slate-900 mb-2">eBook Not Found</h3>
+        <p className="text-slate-500 mb-6 max-w-md">The eBook you are looking for does not exist or you do not have permission to view it.</p>
+        </div>
+    )}
+  </DashboardLayout>
   )
 }
 
