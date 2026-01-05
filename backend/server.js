@@ -15,7 +15,7 @@ const app = express();
 app.use (
     cors({
         origin: [
-            "https://bookly-nine-psi.vercel.app/",
+            "https://bookly-nine-psi.vercel.app",
             "http://localhost:5173"
         ],
         methods: ["GET", "POST", "PUT", "DELETE"],
