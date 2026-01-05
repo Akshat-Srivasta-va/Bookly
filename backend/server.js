@@ -14,7 +14,10 @@ const app = express();
 // middleware to handle cors
 app.use (
     cors({
-        origin: "*",
+        origin: [
+            "https://bookly-nine-psi.vercel.app/",
+            "http://localhost:5173"
+        ],
         methods: ["GET", "POST", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"],
     })
