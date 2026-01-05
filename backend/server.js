@@ -30,7 +30,9 @@ connectDb();
 app.use(express.json());
 
 // static folder for uploads
-app.use("/backend/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/backend/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 // Routes here
